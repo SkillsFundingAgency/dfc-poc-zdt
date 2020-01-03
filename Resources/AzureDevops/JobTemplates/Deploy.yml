@@ -1,5 +1,11 @@
 parameters:
   Environment: 'Unknown'
+  ArmTemplateRoot: ''
+  AzureSubscription: ''
+  ResourceGroup: ''
+  EnvironmentTag: ''
+  ParentBusinessTag: ''
+  ServiceOfferingTag: 
 
 jobs:
 - deployment: Deploy_${{ parameters.Environment }}
@@ -10,6 +16,15 @@ jobs:
     runOnce:
       deploy:
         steps:
+        # ARM template
+        - template: AzureDevOpsTemplates/Deploy/StepTemplates/dfc-arm-deploy.yml@dfc-devops
+          parameters:
+            ArmTemplateRoot: ${{ parameters.ArmTemplateRoot }}
+            AzureSubscription: ${{ parameters.AzureSubscriptionEndpoint }}
+            ResourceGroup: ${{ parameters.ResourceGroup }}
+            EnvironmentTag: ${{ parameters.EnvironmentTag }}
+            ParentBusinessTag: ${{ parameters.ParentBusinessTag }}
+            ServiceOfferingTag: ${{ parameters.ServiceOfferingTag }}
         # nop
         - powershell: Write-Output "Hello"
           displayName: Dummy step

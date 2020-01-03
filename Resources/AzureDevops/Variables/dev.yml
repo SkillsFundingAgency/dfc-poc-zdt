@@ -1,0 +1,7 @@
+variables:
+- name: projectPrefix
+  value: dfc-pocdev-zdt
+- name: ReleaseEnvironmentName
+  value: DEV
+- name: ResourceGroup
+  value: $(projectPrefix)-rg

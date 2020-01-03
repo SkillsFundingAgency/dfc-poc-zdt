@@ -46,10 +46,6 @@
                 "description": "Array of connection strings to be created"
             }
         },
-        "deployStagingSlot": {
-            "type": "bool",
-            "defaultValue": true
-        },
         "clientAffinity": {
             "type": "bool",
             "defaultValue": false
@@ -69,7 +65,6 @@
             },
             "resources": [
                 {
-                    "condition": "[parameters('deployStagingSlot')]",
                     "name": "staging",
                     "type": "slots",
                     "apiVersion": "2018-11-01",

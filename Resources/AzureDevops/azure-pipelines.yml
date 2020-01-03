@@ -52,5 +52,18 @@ stages:
 # Deploy to the dev env on sucessful build, if it is the master branch and not a pull request
 - stage: DeployToDev
   condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest'))
+  variables:
+    - template: Variables/cdh.yml
+    - template: Variables/dev.yml
+
+  # single reusable template for deployment
   jobs:
   - template: JobTemplates/Deploy.yml
+    parameters:
+      Environment: DEV
+      ArmTemplateRoot: "$(System.DefaultWorkingDirectory)/Resources/ArmTemplates"
+      AzureSubscription: $(AzureSubscription)
+      ResourceGroup: $(ResourceGroup)
+      EnvironmentTag: $(EnvironmentTag)
+      ParentBusinessTag: $(ParentBusinessTag)
+      ServiceOfferingTag: $(ServiceOfferingTag)

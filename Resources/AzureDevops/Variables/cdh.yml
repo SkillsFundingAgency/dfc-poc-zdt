@@ -1,0 +1,9 @@
+variables:
+- name: AzureSubscription
+  value: 'SFA-CDH-Dev/Test (962cae10-2950-412a-93e3-d8ae92b17896)'
+- name: EnvironmentTag
+  value: 'Dev/Test'
+- name: ParentBusiness
+  value: 'National Careers Service (PP)'
+- name: ServiceOfferingTag
+  value: 'Digital First Career Service (DFCS) Website (PP)'

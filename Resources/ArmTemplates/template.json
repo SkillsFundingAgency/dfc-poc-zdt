@@ -124,8 +124,13 @@
           "appServicePlanResourceGroup": {
             "value": "[resourcegroup().name]"
           },
-          "deployStagingSlot": {
-            "value": true
+                    "appServiceAppSettings": {
+                        "value": [
+                            {
+                                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                                "value": "[reference(variables('webAppInsightsName')).outputs.InstrumentationKey.value]"
+                            }
+                        ]
           }
         }
       }
