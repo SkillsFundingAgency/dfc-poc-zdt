@@ -32,6 +32,20 @@
                 "description": "Type of site, either (web)app or functionapp"
             }
         },
+        "appServiceAppSettings": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Array of app settings to be created"
+            }
+        },
+        "appServiceConnectionStrings": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Array of connection strings to be created"
+            }
+        },
         "deployStagingSlot": {
             "type": "bool",
             "defaultValue": true
@@ -52,13 +66,6 @@
             "kind": "[parameters('appServiceType')]",
             "location": "[resourceGroup().location]",
             "properties": {
-                "serverFarmId": "[variables('appServicePlanId')]",
-                "clientAffinityEnabled": "[parameters('clientAffinity')]",
-                "siteConfig": {
-                    "alwaysOn": true,
-                    "phpVersion": "off"
-                },
-                "httpsOnly": true
             },
             "resources": [
                 {
@@ -68,8 +75,13 @@
                     "apiVersion": "2018-11-01",
                     "location": "[resourceGroup().location]",
                     "properties": {
+                        "serverFarmId": "[variables('appServicePlanId')]",
+                        "httpsOnly": true,
                         "clientAffinityEnabled": "[parameters('clientAffinity')]",
                         "siteConfig": {
+                            "alwaysOn": true,
+                            "appSettings": "[parameters('appServiceAppSettings')]",
+                            "connectionStrings": "[parameters('appServiceConnectionStrings')]",
                             "phpVersion": "off"
                         }
                     },

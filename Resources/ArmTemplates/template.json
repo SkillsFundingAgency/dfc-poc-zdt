@@ -111,7 +111,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[concat(variables('localDeploymentUrlBase'),'app-service.json')]",
+          "uri": "[concat(variables('localDeploymentUrlBase'),'app-service-slot.json')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -162,7 +162,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[concat(variables('localDeploymentUrlBase'),'app-service.json')]",
+          "uri": "[concat(variables('localDeploymentUrlBase'),'app-service-slot.json')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -171,6 +171,9 @@
           },
           "appServicePlanName": {
             "value": "[variables('appServicePlanName')]"
+          },
+          "appServiceType": {
+            "value": "functionapp"
           },
           "appServicePlanResourceGroup": {
             "value": "[resourcegroup().name]"

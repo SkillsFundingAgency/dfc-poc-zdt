@@ -1,0 +1,15 @@
+parameters:
+  Environment: 'Unknown'
+
+jobs:
+- deployment: Deploy to ${{ parameters.Environment }}
+  pool:
+    name: 'NCS - CI and CD'
+  environment: ${{ parameters.Environment }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        # nop
+        - powershell: Write-Output "Hello"
+          displayName: Dummy step

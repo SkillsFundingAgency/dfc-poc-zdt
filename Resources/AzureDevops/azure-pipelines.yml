@@ -1,8 +1,3 @@
-variables:
-    SolutionPrefix: 'Dfc.Poc'
-    BuildPlatform: 'any cpu'
-    BuildConfiguration: 'release'
-
 resources:
   repositories:
   - repository: self
@@ -13,7 +8,13 @@ resources:
     endpoint: 'GitHub (ESFA)'
 
 stages:
+# Build all the artefacts
 - stage: Build
+  variables:
+    SolutionPrefix: 'Dfc.Poc'
+    BuildPlatform: 'any cpu'
+    BuildConfiguration: 'release'
+
   jobs:
   # ARM template
   - job:
@@ -26,7 +27,7 @@ stages:
 
   # Web App
   - job:
-    displayName: "Build DotNetCore app"
+    displayName: "Build website"
     pool: 'NCS - CI and CD'
     steps:
     - template: /AzureDevOpsTemplates/Build/StepTemplates/dfc-dotnetcore-build-notests.yml@dfc-devops
@@ -35,3 +36,21 @@ stages:
         BuildPlatform: $(BuildPlatform)
         BuildConfiguration: $(BuildConfiguration)
         PublishWebApp: true
+
+  # Function App
+  - job:
+    displayName: "Build function app"
+    pool: 'NCS - CI and CD'
+    steps:
+    - template: /AzureDevOpsTemplates/Build/StepTemplates/dfc-dotnetcore-build-notests.yml@dfc-devops
+      parameters:
+        SolutionBaseName: "$(SolutionPrefix).FunctionApp"
+        BuildPlatform: $(BuildPlatform)
+        BuildConfiguration: $(BuildConfiguration)
+        PublishWebApp: true
+
+# Deploy to the dev env on sucessful build, if it is the master branch and not a pull request
+- stage: DeployToDev
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'), ne(variables['Build.Reason'], 'PullRequest'))
+  jobs:
+  - template: JobTemplates/Deploy.yml
