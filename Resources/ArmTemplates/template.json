@@ -90,7 +90,7 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "webAppInsightsName": {
+          "appInsightsName": {
             "value": "[variables('webAppInsightsName')]"
           },
           "attachedService": {
@@ -115,7 +115,7 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "webAppServiceName": {
+          "appServiceName": {
             "value": "[variables('webAppServiceName')]"
           },
           "appServicePlanName": {
@@ -141,7 +141,7 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "webAppInsightsName": {
+          "appInsightsName": {
             "value": "[variables('fnAppInsightsName')]"
           },
           "attachedService": {
@@ -166,7 +166,7 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "webAppServiceName": {
+          "appServiceName": {
             "value": "[variables('fnAppName')]"
           },
           "appServicePlanName": {

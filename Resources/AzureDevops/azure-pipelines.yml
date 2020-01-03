@@ -1,5 +1,5 @@
 variables:
-    SolutionBaseName: 'Dfc.Poc'
+    SolutionPrefix: 'Dfc.Poc'
     BuildPlatform: 'any cpu'
     BuildConfiguration: 'release'
 
