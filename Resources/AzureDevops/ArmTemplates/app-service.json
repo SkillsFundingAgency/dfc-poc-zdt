@@ -1,0 +1,85 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "App Service name to be created"
+            }
+        },
+        "appServicePlanName": {
+            "type": "string",
+            "metadata": {
+                "description": "App Service Plan to put the app service inside"
+            }
+        },
+        "appServicePlanResourceGroup": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().name]",
+            "metadata": {
+                "description": "Resource group the App Service Plan is within"
+            }
+        },
+        "appServiceType": {
+            "type": "string",
+            "allowedValues": [
+                "app",
+                "functionapp"
+            ],
+            "defaultValue": "app",
+            "metadata": {
+                "description": "Type of site, either (web)app or functionapp"
+            }
+        },
+        "deployStagingSlot": {
+            "type": "bool",
+            "defaultValue": true
+        },
+        "clientAffinity": {
+            "type": "bool",
+            "defaultValue": false
+        }
+    },
+    "variables": {
+        "appServicePlanId": "[resourceId(parameters('appServicePlanResourceGroup'), 'Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+    },
+    "resources": [
+        {
+            "name": "[parameters('appServiceName')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "kind": "[parameters('appServiceType')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "serverFarmId": "[variables('appServicePlanId')]",
+                "clientAffinityEnabled": "[parameters('clientAffinity')]",
+                "siteConfig": {
+                    "alwaysOn": true,
+                    "phpVersion": "off"
+                },
+                "httpsOnly": true
+            },
+            "resources": [
+                {
+                    "condition": "[parameters('deployStagingSlot')]",
+                    "name": "staging",
+                    "type": "slots",
+                    "apiVersion": "2018-11-01",
+                    "location": "[resourceGroup().location]",
+                    "properties": {
+                        "clientAffinityEnabled": "[parameters('clientAffinity')]",
+                        "siteConfig": {
+                            "phpVersion": "off"
+                        }
+                    },
+                    "dependsOn": [
+                        "[parameters('appServiceName')]"
+                    ]
+                }
+            ],
+            "dependsOn": []
+        }
+    ],
+    "outputs": {}
+}
