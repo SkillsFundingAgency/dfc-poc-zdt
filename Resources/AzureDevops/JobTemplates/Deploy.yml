@@ -2,7 +2,7 @@ parameters:
   Environment: 'Unknown'
 
 jobs:
-- deployment: Deploy to ${{ parameters.Environment }}
+- deployment: Deploy_${{ parameters.Environment }}
   pool:
     name: 'NCS - CI and CD'
   environment: ${{ parameters.Environment }}
