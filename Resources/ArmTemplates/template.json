@@ -12,7 +12,7 @@
       "type": "string",
       "defaultValue": "1",
       "metadata": {
-          "description": "Size of each instance in the app service plan"
+        "description": "Size of each instance in the app service plan"
       },
       "allowedValues": [
         "1",
@@ -24,7 +24,7 @@
       "type": "int",
       "defaultValue": 2,
       "metadata": {
-          "description": "Number of instances in the app service plan"
+        "description": "Number of instances in the app service plan"
       }
     }
   },
@@ -124,13 +124,17 @@
           "appServicePlanResourceGroup": {
             "value": "[resourcegroup().name]"
           },
-                    "appServiceAppSettings": {
-                        "value": [
-                            {
-                                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                "value": "[reference(variables('webAppInsightsName')).outputs.InstrumentationKey.value]"
-                            }
-                        ]
+          "appServiceAppSettings": {
+            "value": [
+              {
+                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                "value": "[reference(variables('webAppInsightsName')).outputs.InstrumentationKey.value]"
+              },
+              {
+                "name": "AzureWebJobsStorage",
+                "value": "[reference(variables('storageAccountName')).outputs.storageConnectionString.value]"
+              }
+            ]
           }
         }
       }
@@ -183,8 +187,25 @@
           "appServicePlanResourceGroup": {
             "value": "[resourcegroup().name]"
           },
-          "deployStagingSlot": {
-            "value": true
+          "appServiceAppSettings": {
+            "value": [
+              {
+                "name": "FUNCTIONS_EXTENSION_VERSION",
+                "value": "~2"
+              },
+              {
+                "name": "MSDEPLOY_RENAME_LOCKED_FILES",
+                "value": "1"
+              },
+              {
+                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                "value": "[reference(variables('fnAppInsightsName')).outputs.InstrumentationKey.value]"
+              },
+              {
+                "name": "AzureWebJobsStorage",
+                "value": "[reference(variables('storageAccountName')).outputs.storageConnectionString.value]"
+              }
+            ]
           }
         }
       }
