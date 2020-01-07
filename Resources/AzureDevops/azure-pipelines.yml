@@ -69,5 +69,6 @@ stages:
       ServiceOfferingTag: "$(ServiceOfferingTag)"
       AppServicePrefix: $(projectPrefix)
       WebAppPackage: "$(Pipeline.Workspace)/Dfc.Poc.WebApp/DeploymentPackages/Dfc.Poc.WebApp/Dfc.Poc.WebApp.zip"
-      WebSlotUrl: dfc-pocdev-zdt-as-staging.azurewebsites.net
+      WebSlotUrl: https://dfc-pocdev-zdt-as-staging.azurewebsites.net/
       FunctionAppPackage: "$(Pipeline.Workspace)/Dfc.Poc.FunctionApp/DeploymentPackages/Dfc.Poc.FunctionApp/Dfc.Poc.FunctionApp.zip"
+      FunctionSlotUrl: https://dfc-pocdev-zdt-fa-staging.azurewebsites.net/api/Function1

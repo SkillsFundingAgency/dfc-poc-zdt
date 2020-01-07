@@ -62,6 +62,10 @@
             "kind": "[parameters('appServiceType')]",
             "location": "[resourceGroup().location]",
             "properties": {
+                "serverFarmId": "[variables('appServicePlanId')]",
+                "siteConfig": {
+                    "alwaysOn": true
+                }
             },
             "resources": [
                 {
@@ -70,11 +74,9 @@
                     "apiVersion": "2018-11-01",
                     "location": "[resourceGroup().location]",
                     "properties": {
-                        "serverFarmId": "[variables('appServicePlanId')]",
                         "httpsOnly": true,
                         "clientAffinityEnabled": "[parameters('clientAffinity')]",
                         "siteConfig": {
-                            "alwaysOn": true,
                             "appSettings": "[parameters('appServiceAppSettings')]",
                             "connectionStrings": "[parameters('appServiceConnectionStrings')]",
                             "ftpsState": "Disabled",

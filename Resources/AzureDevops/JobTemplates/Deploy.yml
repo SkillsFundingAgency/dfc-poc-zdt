@@ -10,6 +10,7 @@ parameters:
   WebAppPackage: ''
   WebSlotUrl: ''
   FunctionAppPackage: ''
+  FunctionSlotUrl: ''
 
 jobs:
 # Deploy ARM template
@@ -49,8 +50,15 @@ jobs:
             AppServiceName: "${{ parameters.AppServicePrefix }}-as"
             Package: "${{ parameters.WebAppPackage }}"
 
-        # Test web app (dummy)
-        - powershell: Write-Output "Tests would go here"
+        # Test web app
+        - task: PowerShell@2
+          name: TestWebApp
+          displayName: "Test ${{ parameters.AppServicePrefix }}-as"
+          inputs:
+            targetType: 'inline'
+            script: |
+              $request = Invoke-WebRequest -Method Get -Uri ${{ parameters.WebSlotUrl }}
+              If ($request.StatusCode -eq 200) { exit 0 } else { exit $request.StatusCode }
 
 # Deploy function app
 - deployment: FunctionApp_${{ parameters.Environment }}

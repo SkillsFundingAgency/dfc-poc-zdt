@@ -124,9 +124,6 @@
           "appServicePlanName": {
             "value": "[variables('appServicePlanName')]"
           },
-          "appServicePlanResourceGroup": {
-            "value": "[resourcegroup().name]"
-          },
           "appServiceAppSettings": {
             "value": [
               {
