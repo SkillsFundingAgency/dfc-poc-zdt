@@ -41,7 +41,7 @@ jobs:
       deploy:
         steps:
         # Deploy app to slot template
-        - template: AzureDevOpsTemplates/Deploy/StepTemplates/dfc-arm-deploy.yml@dfc-devops
+        - template: StepTemplates/dfc-appservice-deploy-slot.yml
           parameters:
             AzureSubscription: "${{ parameters.AzureSubscription }}"
             ResourceGroup: "${{ parameters.ResourceGroup }}"
