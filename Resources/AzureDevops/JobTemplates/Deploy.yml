@@ -8,6 +8,7 @@ parameters:
   ServiceOfferingTag: ''
   AppServicePrefix: ''
   WebAppPackage: ''
+  WebSlotUrl: ''
   FunctionAppPackage: ''
 
 jobs:
@@ -47,3 +48,26 @@ jobs:
             ResourceGroup: "${{ parameters.ResourceGroup }}"
             AppServiceName: "${{ parameters.AppServicePrefix }}-as"
             Package: "${{ parameters.WebAppPackage }}"
+
+        # Deploy app to slot template
+        - template: StepTemplates/dfc-owasp-test.yml
+          parameters:
+            OwaspTarget: "${{ parameters.WebSlotUrl }}"
+
+# Deploy function app
+- deployment: FunctionApp_${{ parameters.Environment }}
+  pool:
+    name: 'NCS - CI and CD'
+  dependsOn: AzureResources_${{ parameters.Environment }}
+  environment: ${{ parameters.Environment }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        # Deploy app to slot template
+        - template: StepTemplates/dfc-appservice-deploy-slot.yml
+          parameters:
+            AzureSubscription: "${{ parameters.AzureSubscription }}"
+            ResourceGroup: "${{ parameters.ResourceGroup }}"
+            AppServiceName: "${{ parameters.AppServicePrefix }}-fa"
+            Package: "${{ parameters.FunctionAppPackage }}"

@@ -1,0 +1,29 @@
+# Swap slots 
+
+parameters:
+  AzureSubscription: ''
+  ResourceGroup: ''
+  AppServiceName: ''
+  SlotName: 'staging'
+
+steps:
+# swap slot
+- task: AzureAppServiceManage@0
+  displayName: "Swap slot ${{ parameters.SlotName }} to production on ${{ parameters.AppServiceName }}"
+  inputs:
+    azureSubscription: "${{ parameters.AzureSubscription }}"
+    action: 'Swap Slots'
+    WebAppName: "${{ parameters.AppServiceName }}"
+    ResourceGroupName: "${{ parameters.ResourceGroup }}"
+    Slot: "${{ parameters.SlotName }}"
+
+# stop slot
+- task: AzureAppServiceManage@0
+  displayName: "Stop ${{ parameters.SlotName }} slot (old production) on ${{ parameters.AppServiceName }}"
+  inputs:
+    azureSubscription: "${{ parameters.AzureSubscription }}"
+    Action: 'Stop Azure App Service'
+    WebAppName: "${{ parameters.AppServiceName }}"
+    SpecifySlotOrASE: true
+    ResourceGroupName: "${{ parameters.ResourceGroup }}"
+    Slot: "${{ parameters.SlotName }}"
