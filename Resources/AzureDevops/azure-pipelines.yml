@@ -62,7 +62,7 @@ stages:
     parameters:
       Environment: POCDEV
       ArmTemplateRoot: "$(System.DefaultWorkingDirectory)/Resources/ArmTemplates"
-      AzureSubscription: "$(AzureSubscription)"
+      AzureSubscription: 'SFA-CDH-Dev/Test (962cae10-2950-412a-93e3-d8ae92b17896)'
       ResourceGroup: "$(ResourceGroup)"
       EnvironmentTag: "$(EnvironmentTag)"
       ParentBusinessTag: "$(ParentBusinessTag)"
