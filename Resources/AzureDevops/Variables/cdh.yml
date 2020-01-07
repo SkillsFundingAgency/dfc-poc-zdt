@@ -7,3 +7,5 @@ variables:
   value: 'National Careers Service (PP)'
 - name: ServiceOfferingTag
   value: 'Digital First Career Service (DFCS) Website (PP)'
+- name: releaseNumber
+  value: $(Build.BuildNumber)

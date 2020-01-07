@@ -26,6 +26,13 @@
       "metadata": {
         "description": "Number of instances in the app service plan"
       }
+    },
+    "releaseNumber": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Release version number"
+      }
     }
   },
   "variables": {
@@ -133,6 +140,10 @@
               {
                 "name": "AzureWebJobsStorage",
                 "value": "[reference(variables('storageAccountName')).outputs.storageConnectionString.value]"
+              },
+              {
+                "name": "releaseNumber",
+                "value": "[parameters('releaseNumber')]"
               }
             ]
           }
@@ -204,6 +215,10 @@
               {
                 "name": "AzureWebJobsStorage",
                 "value": "[reference(variables('storageAccountName')).outputs.storageConnectionString.value]"
+              },
+              {
+                "name": "releaseNumber",
+                "value": "[parameters('releaseNumber')]"
               }
             ]
           }

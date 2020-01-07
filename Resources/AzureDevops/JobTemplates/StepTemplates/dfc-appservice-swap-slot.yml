@@ -26,4 +26,4 @@ steps:
     WebAppName: "${{ parameters.AppServiceName }}"
     SpecifySlotOrASE: true
     ResourceGroupName: "${{ parameters.ResourceGroup }}"
-    SourceSlot: "${{ parameters.SlotName }}"
+    Slot: "${{ parameters.SlotName }}"

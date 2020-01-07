@@ -4,6 +4,9 @@
   "parameters": {
     "projectPrefix": {
       "value": "__projectPrefix__"
+    },
+    "releaseNumber": {
+      "value": "__releaseNumber__"
     }
   }
 }
