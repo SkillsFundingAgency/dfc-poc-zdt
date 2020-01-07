@@ -5,10 +5,14 @@ parameters:
   ResourceGroup: ''
   EnvironmentTag: ''
   ParentBusinessTag: ''
-  ServiceOfferingTag: 
+  ServiceOfferingTag: ''
+  AppServicePrefix: ''
+  WebAppPackage: ''
+  FunctionAppPackage: ''
 
 jobs:
-- deployment: Deploy_${{ parameters.Environment }}
+# Deploy ARM template
+- deployment: AzureResources_${{ parameters.Environment }}
   pool:
     name: 'NCS - CI and CD'
   environment: ${{ parameters.Environment }}
@@ -16,14 +20,6 @@ jobs:
     runOnce:
       deploy:
         steps:
-        # debug
-        - powershell: |
-            Write-Output "Endpoint: ${{ parameters.AzureSubscription }}"
-            Write-Output "Resource group: ${{ parameters.ResourceGroup }}"
-            Write-Output "Env tag: ${{ parameters.EnvironmentTag }}"
-            Write-Output "Parent business: ${{ parameters.ParentBusinessTag }}"
-            Write-Output "Service: ${{ parameters.ServiceOfferingTag }}"
-          displayName: Dummy step
         # ARM template
         - template: AzureDevOpsTemplates/Deploy/StepTemplates/dfc-arm-deploy.yml@dfc-devops
           parameters:
@@ -33,3 +29,21 @@ jobs:
             EnvironmentTag: "${{ parameters.EnvironmentTag }}"
             ParentBusinessTag: "${{ parameters.ParentBusinessTag }}"
             ServiceOfferingTag: "${{ parameters.ServiceOfferingTag }}"
+
+# Deploy web app
+- deployment: WebApp_${{ parameters.Environment }}
+  pool:
+    name: 'NCS - CI and CD'
+  dependsOn: AzureResources_${{ parameters.Environment }}
+  environment: ${{ parameters.Environment }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        # Deploy app to slot template
+        - template: AzureDevOpsTemplates/Deploy/StepTemplates/dfc-arm-deploy.yml@dfc-devops
+          parameters:
+            AzureSubscription: "${{ parameters.AzureSubscription }}"
+            ResourceGroup: "${{ parameters.ResourceGroup }}"
+            AppServiceName: "${{ parameters.AppServicePrefix }}-as"
+            Package: "${{ parameters.WebAppPackage }}"

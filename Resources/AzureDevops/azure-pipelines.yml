@@ -67,3 +67,5 @@ stages:
       EnvironmentTag: "$(EnvironmentTag)"
       ParentBusinessTag: "$(ParentBusinessTag)"
       ServiceOfferingTag: "$(ServiceOfferingTag)"
+      AppServicePrefix: $(projectPrefix)
+      WebAppPackage: "$(Pipeline.Workspace)/Dfc.Poc.WebApp/DeploymentPackages/Dfc.Poc.WebApp/Dfc.Poc.WebApp.zip"

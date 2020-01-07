@@ -1,0 +1,45 @@
+# Deploy to app service slot  
+
+parameters:
+  AzureSubscription: ''
+  ResourceGroup: ''
+  AppServiceName: ''
+  Package: ''
+  SlotName: 'staging'
+
+steps:
+# stop slot
+- task: AzureAppServiceManage@0
+  displayName: "Stop ${{ parameters.SlotName }} slot on ${{ parameters.AppServiceName }}"
+  inputs:
+    azureSubscription: "${{ parameters.AzureSubscription }}"
+    Action: 'Stop Azure App Service'
+    WebAppName: "${{ parameters.AppServiceName }}"
+    SpecifySlotOrASE: true
+    ResourceGroupName: "${{ parameters.ResourceGroup }}"
+    Slot: "${{ parameters.SlotName }}"
+
+# deploy code
+- task: AzureRmWebAppDeployment@3
+  displayName: 'Deploy app to ${{ parameters.AppServiceName }}'
+  inputs:
+    azureSubscription: "${{ parameters.AzureSubscription }}"
+    WebAppName: "${{ parameters.AppServiceName }}"
+    DeployToSlotFlag: true
+    ResourceGroupName: "${{ parameters.ResourceGroup }}"
+    SlotName: "${{ parameters.SlotName }}"
+    Package: "${{ parameters.Package }}"      
+    UseWebDeploy: true
+    RemoveAdditionalFilesFlag: true
+    AdditionalArguments: '-verbose'
+
+# start slot
+- task: AzureAppServiceManage@0
+  displayName: "Start ${{ parameters.SlotName }} slot on ${{ parameters.AppServiceName }}"
+  inputs:
+    azureSubscription: "${{ parameters.AzureSubscription }}"
+    Action: 'Start Azure App Service'
+    WebAppName: "${{ parameters.AppServiceName }}"
+    SpecifySlotOrASE: true
+    ResourceGroupName: "${{ parameters.ResourceGroup }}"
+    Slot: "${{ parameters.SlotName }}"
