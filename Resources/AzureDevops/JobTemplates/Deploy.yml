@@ -49,7 +49,7 @@ jobs:
             AppServiceName: "${{ parameters.AppServicePrefix }}-as"
             Package: "${{ parameters.WebAppPackage }}"
 
-        # Deploy app to slot template
+        # Test web app (OWASP)
         - template: StepTemplates/dfc-owasp-test.yml
           parameters:
             OwaspTarget: "${{ parameters.WebSlotUrl }}"
@@ -71,3 +71,38 @@ jobs:
             ResourceGroup: "${{ parameters.ResourceGroup }}"
             AppServiceName: "${{ parameters.AppServicePrefix }}-fa"
             Package: "${{ parameters.FunctionAppPackage }}"
+
+        # Test function app (dummy)
+        - powershell: Write-Output "Tests would go here"
+
+# Swap on success
+- deployment: SwapToProduction_${{ parameters.Environment }}
+  pool:
+    name: 'NCS - CI and CD'
+  dependsOn:
+  - WebApp_${{ parameters.Environment }}
+  - FunctionApp_${{ parameters.Environment }}
+  condition: succeeded()
+  environment: ${{ parameters.Environment }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        # dummy
+        - powershell: Write-Output "Run if successful"
+
+# Cleanup on failure
+- deployment: CleanupFailure_${{ parameters.Environment }}
+  pool:
+    name: 'NCS - CI and CD'
+  dependsOn:
+  - WebApp_${{ parameters.Environment }}
+  - FunctionApp_${{ parameters.Environment }}
+  condition: failed()
+  environment: ${{ parameters.Environment }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        # dummy
+        - powershell: Write-Output "Run on failure"

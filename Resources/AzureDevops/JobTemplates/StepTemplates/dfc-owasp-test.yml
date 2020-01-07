@@ -15,11 +15,12 @@ steps:
   displayName: 'Download convert-report script'
   inputs:
     targetType: 'inline'
-    script: Invoke-WebRequest -Uri ${{ parameters.ConvertReportScriptUrl }} -OutFile ${{ parameters.ConvertReportScriptFilePath }}
+    script: |
+      New-Item -Path "${{ parameters.ZapWorkingDirectory }}" -ItemType Directory -ErrorAction SilentlyContinue
+      Invoke-WebRequest -Uri ${{ parameters.ConvertReportScriptUrl }} -OutFile ${{ parameters.ConvertReportScriptFilePath }}
   
 # Run the zap test 
 - bash: |
-    mkdir [-p] ${{ parameters.ZapWorkingDirectory }}
     zap-baseline.py -t https://${{ parameters.OwaspTarget }} -I -g gen.conf -x ${{ parameters.ZapReportName }}
   workingDirectory: ${{ parameters.ZapWorkingDirectory }}
   displayName: "Bash Script: Run OWASP on ${{ parameters.OwaspTarget }}"
