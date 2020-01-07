@@ -15,7 +15,7 @@ steps:
     action: 'Swap Slots'
     WebAppName: "${{ parameters.AppServiceName }}"
     ResourceGroupName: "${{ parameters.ResourceGroup }}"
-    Slot: "${{ parameters.SlotName }}"
+    SourceSlot: "${{ parameters.SlotName }}"
 
 # stop slot
 - task: AzureAppServiceManage@0
@@ -26,4 +26,4 @@ steps:
     WebAppName: "${{ parameters.AppServiceName }}"
     SpecifySlotOrASE: true
     ResourceGroupName: "${{ parameters.ResourceGroup }}"
-    Slot: "${{ parameters.SlotName }}"
+    SourceSlot: "${{ parameters.SlotName }}"
