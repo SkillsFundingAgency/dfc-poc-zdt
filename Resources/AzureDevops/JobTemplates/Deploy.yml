@@ -59,11 +59,16 @@ jobs:
             script: |
               $loop = 0
               do {
-                  $request = Invoke-WebRequest -Method Get -Uri ${{ parameters.WebSlotUrl }}
+                  try
+                  {
+                      $request = Invoke-WebRequest -Method Get -Uri ${{ parameters.WebSlotUrl }}
+                  }
+                  catch {
+                      write-verbose "Attepmpt $loop failed - result code $request.StatusCode"
+                      start-sleep 15
+                  }  
                   If ($request.StatusCode -eq 200) { break }
-                  write-verbose "Attepmpt $loop failed - result code $request.StatusCode"
                   $loop += 1
-                  start-sleep 15
               } while ($loop -lt 10)
               If ($request.StatusCode -ne 200) { exit 1 }
 
