@@ -60,10 +60,10 @@ stages:
   jobs:
   - template: JobTemplates/Deploy.yml
     parameters:
-      Environment: DEV
+      Environment: POCDEV
       ArmTemplateRoot: "$(System.DefaultWorkingDirectory)/Resources/ArmTemplates"
-      AzureSubscription: $(AzureSubscription)
-      ResourceGroup: $(ResourceGroup)
-      EnvironmentTag: $(EnvironmentTag)
-      ParentBusinessTag: $(ParentBusinessTag)
-      ServiceOfferingTag: $(ServiceOfferingTag)
+      AzureSubscription: "$(AzureSubscription)"
+      ResourceGroup: "$(ResourceGroup)"
+      EnvironmentTag: "$(EnvironmentTag)"
+      ParentBusinessTag: "$(ParentBusinessTag)"
+      ServiceOfferingTag: "$(ServiceOfferingTag)"

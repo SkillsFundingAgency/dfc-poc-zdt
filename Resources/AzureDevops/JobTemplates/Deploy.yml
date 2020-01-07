@@ -16,15 +16,20 @@ jobs:
     runOnce:
       deploy:
         steps:
+        # debug
+        - powershell: |
+            Write-Output "Endpoint: ${{ parameters.AzureSubscriptionEndpoint }}"
+            Write-Output "Resource group: ${{ parameters.ResourceGroup }}"
+            Write-Output "Env tag: ${{ parameters.EnvironmentTag }}"
+            Write-Output "Parent business: ${{ parameters.ParentBusinessTag }}"
+            Write-Output "Service: ${{ parameters.ServiceOfferingTag }}"
+          displayName: Dummy step
         # ARM template
         - template: AzureDevOpsTemplates/Deploy/StepTemplates/dfc-arm-deploy.yml@dfc-devops
           parameters:
-            ArmTemplateRoot: ${{ parameters.ArmTemplateRoot }}
-            AzureSubscription: ${{ parameters.AzureSubscriptionEndpoint }}
-            ResourceGroup: ${{ parameters.ResourceGroup }}
-            EnvironmentTag: ${{ parameters.EnvironmentTag }}
-            ParentBusinessTag: ${{ parameters.ParentBusinessTag }}
-            ServiceOfferingTag: ${{ parameters.ServiceOfferingTag }}
-        # nop
-        - powershell: Write-Output "Hello"
-          displayName: Dummy step
+            ArmTemplateRoot: "${{ parameters.ArmTemplateRoot }}"
+            AzureSubscription: "${{ parameters.AzureSubscriptionEndpoint }}"
+            ResourceGroup: "${{ parameters.ResourceGroup }}"
+            EnvironmentTag: "${{ parameters.EnvironmentTag }}"
+            ParentBusinessTag: "${{ parameters.ParentBusinessTag }}"
+            ServiceOfferingTag: "${{ parameters.ServiceOfferingTag }}"
