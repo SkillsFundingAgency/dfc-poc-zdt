@@ -49,10 +49,8 @@ jobs:
             AppServiceName: "${{ parameters.AppServicePrefix }}-as"
             Package: "${{ parameters.WebAppPackage }}"
 
-        # Test web app (OWASP)
-        - template: StepTemplates/dfc-owasp-test.yml
-          parameters:
-            OwaspTarget: "${{ parameters.WebSlotUrl }}"
+        # Test web app (dummy)
+        - powershell: Write-Output "Tests would go here"
 
 # Deploy function app
 - deployment: FunctionApp_${{ parameters.Environment }}
@@ -88,8 +86,19 @@ jobs:
     runOnce:
       deploy:
         steps:
-        # dummy
-        - powershell: Write-Output "Run if successful"
+        # Swap function app
+        - template: StepTemplates/dfc-appservice-swap-slot.yml
+          parameters:
+            AzureSubscription: "${{ parameters.AzureSubscription }}"
+            ResourceGroup: "${{ parameters.ResourceGroup }}"
+            AppServiceName: "${{ parameters.AppServicePrefix }}-fa"
+
+        # Swap web app
+        - template: StepTemplates/dfc-appservice-swap-slot.yml
+          parameters:
+            AzureSubscription: "${{ parameters.AzureSubscription }}"
+            ResourceGroup: "${{ parameters.ResourceGroup }}"
+            AppServiceName: "${{ parameters.AppServicePrefix }}-as"
 
 # Cleanup on failure
 - deployment: CleanupFailure_${{ parameters.Environment }}
@@ -104,5 +113,24 @@ jobs:
     runOnce:
       deploy:
         steps:
-        # dummy
-        - powershell: Write-Output "Run on failure"
+        # Stop function app staging slot
+        - task: AzureAppServiceManage@0
+          displayName: "Stop function app staging slot"
+          inputs:
+            azureSubscription: "${{ parameters.AzureSubscription }}"
+            Action: 'Stop Azure App Service'
+            WebAppName: "${{ parameters.AppServicePrefix }}-fa"
+            SpecifySlotOrASE: true
+            ResourceGroupName: "${{ parameters.ResourceGroup }}"
+            Slot: staging
+
+        # Stop web app staging slot
+        - task: AzureAppServiceManage@0
+          displayName: "Stop web app staging slot"
+          inputs:
+            azureSubscription: "${{ parameters.AzureSubscription }}"
+            Action: 'Stop Azure App Service'
+            WebAppName: "${{ parameters.AppServicePrefix }}-as"
+            SpecifySlotOrASE: true
+            ResourceGroupName: "${{ parameters.ResourceGroup }}"
+            Slot: staging
