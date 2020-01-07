@@ -25,11 +25,11 @@ jobs:
             Write-Output "Service: ${{ parameters.ServiceOfferingTag }}"
           displayName: Dummy step
         # ARM template
-        - template: AzureDevOpsTemplates/Deploy/StepTemplates/dfc-arm-deploy.yml@dfc-devops
-          parameters:
-            ArmTemplateRoot: "${{ parameters.ArmTemplateRoot }}"
-            AzureSubscription: "${{ parameters.AzureSubscription }}"
-            ResourceGroup: "${{ parameters.ResourceGroup }}"
-            EnvironmentTag: "${{ parameters.EnvironmentTag }}"
-            ParentBusinessTag: "${{ parameters.ParentBusinessTag }}"
-            ServiceOfferingTag: "${{ parameters.ServiceOfferingTag }}"
+#        - template: AzureDevOpsTemplates/Deploy/StepTemplates/dfc-arm-deploy.yml@dfc-devops
+#          parameters:
+#            ArmTemplateRoot: "${{ parameters.ArmTemplateRoot }}"
+#            AzureSubscription: "${{ parameters.AzureSubscription }}"
+#            ResourceGroup: "${{ parameters.ResourceGroup }}"
+#            EnvironmentTag: "${{ parameters.EnvironmentTag }}"
+#            ParentBusinessTag: "${{ parameters.ParentBusinessTag }}"
+#            ServiceOfferingTag: "${{ parameters.ServiceOfferingTag }}"
